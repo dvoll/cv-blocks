@@ -8,6 +8,7 @@ import edit from './edit';
 // Import CSS
 import './style.scss';
 import './editor.scss';
+import CvStageItem from './components/cv-stage-item';
 
 // Components
 // const { __ } = wp.i18n;
@@ -28,45 +29,44 @@ registerBlockType( 'cv-blocks/cv-stage-item', {
     parent: [ 'cv-blocks/cv-stage' ],
 
     attributes: {
-        text: {
-            type: 'string',
-            source: 'text',
-            default: 'Beschreibung',
-            selector: '.cv-stage-item__text',
-        },
         title: {
             type: 'string',
             source: 'text',
             default: 'Headline',
-            selector: '.cv-stage-item__title',
+            selector: '.cv-stage-card__title',
+        },
+        description: {
+            type: 'string',
+            source: 'text',
+            default: 'Beschreibung',
+            selector: '.cv-stage-card__description',
         },
         url: {
             type: 'string',
-            source: 'text',
-            selector: '.cv-stage-item__url',
+            source: 'attribute',
+            attribute: 'data-background-url',
+            selector: '.cv-stage-card__bg',
         },
+        brightness: {
+            type: 'string',
+            source: 'attribute',
+            attribute: 'data-brightness',
+            selector: '.cv-stage-card__bg',
+            default: '95',
+        },
+    },
+
+    getEditWrapperProps() {
+        // if ( 'left' === containerWidth || 'right' === containerWidth || 'full' === containerWidth ) {
+        // 	return { 'data-align': containerWidth };
+        // }
+        // return { 'data-align': 'full' };
     },
 
     edit,
 
     save: function( props ) {
-        const { title, text, url } = props.attributes;
-        return (
-            <div className="cv-stage__layer cv-stage-item" key={ title }>
-                <div className="cv-stage-item__bg" />
-                <div className="cv-stage__overlay" />
-                <div className="cv-stage-content">
-                    <p className="cv-stage-content__title cv-stage-item__title">
-                        { title }
-                    </p>
-                    <p className="cv-stage-content__text cv-stage-item__text">
-                        { text }
-                    </p>
-                    <p className="cv-stage-content__url cv-stage-item__url">
-                        { url }
-                    </p>
-                </div>
-            </div>
-        );
+        const attributes = props.attributes;
+        return <CvStageItem attributes={ attributes } />;
     },
 } );
